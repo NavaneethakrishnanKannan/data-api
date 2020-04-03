@@ -1,16 +1,13 @@
 const app = require('./app');
 const http = require('http');
-const port = process.env.PORT || 8000;
-const http_server = http.createServer(app);
 const home = require("./routes/home");
+// eslint-disable-next-line no-undef
+const port = process.env.PORT || process.argv[2];
+const server = http.createServer();
 
-http_server.on('request', app);
-http_server.listen(port, function() {
-	console.log(
-		'Listening on ' +
-			http_server.address().address +
-			':' +
-			http_server.address().port
-	);
+server.listen(port, () => {
+	console.log(server.address().address + ':' + server.address().port);
 });
-app.use('/api/v1/home/', home);
+
+server.on('request', app);
+app.use('/api/v1/home', home);
